@@ -1,0 +1,45 @@
+.ReactList--dragging {
+    -webkit-user-select: none;
+}
+
+.ReactList-item {
+    display: flex;
+    align-items: center;
+
+    height: 2em;
+    width: 8em;
+    margin-top: .2em;
+    padding: 0 .2em;
+
+    background-color: white;
+    border: 1px solid #dddddd;
+    cursor: default;
+    font-size: 1.2em;
+    -webkit-user-select: inherit;
+
+    transition: box-shadow 400ms;
+}
+
+.ReactList-item--active {
+    border: 1px solid magenta;
+}
+
+.ReactList--dragging .ReactList-item {
+    transition: transform 300ms, box-shadow 400ms;
+}
+
+.ReactList--dragging .ReactList-item--dragging {
+    position: relative;
+
+    box-shadow: 0px 2px 6px grey;
+    cursor: move;
+    z-index: 10;
+
+    transition: box-shadow 400ms;
+}
+
+.ReactList-delete {
+    margin-left: auto;
+
+    cursor: pointer;
+}
