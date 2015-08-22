@@ -57,6 +57,8 @@ export default class MutableListItem extends React.Component {
 
   // Determine if we have a click or a drag
   _onMouseDown(e) {
+    let el = React.findDOMNode(this)
+    this._boundingClientRect = el.getBoundingClientRect()
     this._clickFlag = true
 
     // We need to persist this event to use it when the timeout fires,
