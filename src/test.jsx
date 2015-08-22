@@ -75,8 +75,8 @@ class Controller extends React.Component {
     })
 
     return (
-      <div>
-        <input type='text' value={this.state.input} onChange={e => this._onInputChange(e)} onKeyDown={e => this._onInputKey(e)} />
+      <div className='Demo'>
+        <input className='Demo-input' type='text' value={this.state.input} onChange={e => this._onInputChange(e)} onKeyDown={e => this._onInputKey(e)} />
         <List onReorder={(o, n) => this._onReorder(o, n)} enableDeleteTransitions={true} isDraggable={true}>
           {lis}
         </List>

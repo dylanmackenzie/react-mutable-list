@@ -1,3 +1,21 @@
+.Demo {
+    padding: 1rem 3rem;
+    height: 40rem;
+    width: 10rem;
+
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.Demo-input {
+    width: 10rem;
+}
+
+.ReactList {
+    padding-left: 0;
+}
+
 .ReactList--dragging {
     -webkit-user-select: none;
 }
@@ -6,15 +24,15 @@
     display: flex;
     align-items: center;
 
-    height: 2em;
-    width: 8em;
-    margin-top: .2em;
-    padding: 0 .2em;
+    height: 3rem;
+    width: 10rem;
+    margin-top: .1rem;
+    padding: 0 .2rem;
 
     background-color: white;
     border: 1px solid #dddddd;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1.2rem;
     -webkit-user-select: inherit;
 
     transition: border 200ms, opacity 400ms, box-shadow 300ms;
