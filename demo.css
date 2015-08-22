@@ -13,11 +13,11 @@
 
     background-color: white;
     border: 1px solid #dddddd;
-    cursor: default;
+    cursor: pointer;
     font-size: 1.2em;
     -webkit-user-select: inherit;
 
-    transition: box-shadow 400ms;
+    transition: border 200ms, box-shadow 300ms;
 }
 
 .ReactList-item--active {
@@ -25,7 +25,7 @@
 }
 
 .ReactList--dragging .ReactList-item {
-    transition: transform 300ms, box-shadow 400ms;
+    transition: border 200ms, transform 300ms, box-shadow 300ms;
 }
 
 .ReactList--dragging .ReactList-item--dragging {
@@ -35,7 +35,7 @@
     cursor: move;
     z-index: 10;
 
-    transition: box-shadow 400ms;
+    transition: border 200ms, box-shadow 300ms;
 }
 
 .ReactList-delete {
