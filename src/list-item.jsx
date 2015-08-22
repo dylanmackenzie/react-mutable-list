@@ -35,6 +35,9 @@ export default class MutableListItem extends React.Component {
   // Calculate dimensions when an element is mounted
   componentDidMount() {
     let el = React.findDOMNode(this)
+    el.addEventListener('transitionend', e => {
+      this.props.onTransitionEnd(this.props.index, e)
+    })
     this._outerHeight = outerHeight(el)
     this._boundingClientRect = el.getBoundingClientRect()
   }
@@ -44,6 +47,12 @@ export default class MutableListItem extends React.Component {
     let el = React.findDOMNode(this)
     this._outerHeight = outerHeight(el)
     this._boundingClientRect = el.getBoundingClientRect()
+  }
+
+  componentWillLeave(cb) {
+    let el = React.findDOMNode(this)
+    el.style.visibility = 'hidden'
+    this.props.onDelete(this.props.index, this.getOuterHeight(), cb)
   }
 
   // Determine if we have a click or a drag
@@ -109,7 +118,9 @@ export default class MutableListItem extends React.Component {
     return (
       <li {...props}>
         {this.props.children}
-        <button className={'ReactList-delete'}
+        <button
+          className={'ReactList-delete'}
+          onMouseDown={e => e.stopPropagation()}
           onClick={this.props.onRemove}>x</button>
       </li>
     )

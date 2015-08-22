@@ -15,27 +15,30 @@ class Controller extends React.Component {
 
   _onClick(i, e) {
     this.setState(state => {
-      state.actives[i] = !state.actives[i]
+      state.actives[state.actives.indexOf(true)] = false
+      state.actives[i] = true
     })
   }
 
   _onReorder(old, neu) {
-    let tmp = this.state.content[old]
-    this.state.content.splice(old, 1)
-    this.state.content.splice(neu, 0, tmp)
-    tmp = this.state.actives[old]
-    this.state.actives.splice(old, 1)
-    this.state.actives.splice(neu, 0, tmp)
-
-    this.forceUpdate()
+    this.setState(state => {
+      let tmp = this.state.content[old]
+      this.state.content.splice(old, 1)
+      this.state.content.splice(neu, 0, tmp)
+      tmp = this.state.actives[old]
+      this.state.actives.splice(old, 1)
+      this.state.actives.splice(neu, 0, tmp)
+    })
   }
 
   _onRemove(i, e) {
-    this.state.content.splice(i, 1)
-    this.state.actives.splice(i, 1)
-
     e.stopPropagation()
-    this.forceUpdate()
+    e.preventDefault()
+
+    this.setState(state => {
+      this.state.content.splice(i, 1)
+      this.state.actives.splice(i, 1)
+    })
   }
 
   _onInputChange(e) {
@@ -74,7 +77,7 @@ class Controller extends React.Component {
     return (
       <div>
         <input type='text' value={this.state.input} onChange={e => this._onInputChange(e)} onKeyDown={e => this._onInputKey(e)} />
-        <List onReorder={(o, n) => this._onReorder(o, n)} isDraggable={true}>
+        <List onReorder={(o, n) => this._onReorder(o, n)} enableDeleteTransitions={true} isDraggable={true}>
           {lis}
         </List>
       </div>

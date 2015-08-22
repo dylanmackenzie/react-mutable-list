@@ -1,6 +1,5 @@
 import React from 'react/addons'
 
-
 const ReactTransitionGroup = React.addons.TransitionGroup
 const classSet = window.classNames
 
@@ -14,7 +13,40 @@ export default class MutableListView extends React.Component {
       dragItem: null,
       dragIndex: 0,
       dragTransform: [0, 0],
+      deletedIndex: -1,
+      deletedHeight: 0,
+      deletedCallback: null,
     }
+  }
+
+  _onItemDelete(index, height, cb) {
+    if (index === React.Children.count(this.props.children)) {
+      cb()
+      return
+    }
+
+    this.setState({
+      deletedIndex: index,
+      deletedHeight: height,
+      deletedCallback: cb,
+    })
+  }
+
+  _onItemDeleted() {
+    this.state.deletedCallback()
+    this.setState({
+      deletedIndex: -1,
+      deletedHeight: 0,
+      deletedCallback: null,
+    })
+  }
+
+  _onItemTransitionEnd(index, e) {
+    if (this.state.deletedCallback == null || e.propertyName !== 'transform') {
+      return
+    }
+
+    this._onItemDeleted()
   }
 
   _onDragStart(item, e) {
@@ -79,7 +111,7 @@ export default class MutableListView extends React.Component {
   }
 
   render() {
-    let transform, itemHeight, newIndex, oldIndex
+    let transform, newIndex, oldIndex, itemHeight = this.state.deletedHeight
     if (this.state.dragItem != null) {
       transform = this.state.dragTransform
       itemHeight = this.state.dragItem.getOuterHeight()
@@ -90,7 +122,13 @@ export default class MutableListView extends React.Component {
     let i = -1
     let items = React.Children.map(this.props.children, child => {
       let style = child.props.style || {}
+      let isAfterDeleted = false
       i += 1
+
+      if (this.state.deletedIndex !== -1 && i >= this.state.deletedIndex) {
+        style.transform = `translateY(-${itemHeight}px)`
+        isAfterDeleted = true
+      }
 
       if (this.state.dragItem != null) {
         if (i === this.state.dragItem.props.index) {
@@ -114,12 +152,27 @@ export default class MutableListView extends React.Component {
         onDragStart: this._onDragStart.bind(this),
         onDrag: this._onDrag.bind(this),
         onDragEnd: this._onDragEnd.bind(this),
+        onDelete: this._onItemDelete.bind(this),
+        onTransitionEnd: this._onItemTransitionEnd.bind(this),
       })
     })
 
     let classes = classSet('ReactList', {
-      'ReactList--dragging': this.state.dragItem !== null
+      'ReactList--dragging': this.state.dragItem != null,
+      'ReactList--deleting': this.state.deletedIndex !== -1,
     })
+
+    if (this.props.enableDeleteTransitions) {
+      return (
+        <ReactTransitionGroup
+          component='ul'
+          className={classes}
+          transitionName='ReactList-item-'
+        >
+          {items}
+        </ReactTransitionGroup>
+      )
+    }
 
     return (
       <ul className={classes}>
@@ -132,6 +185,7 @@ export default class MutableListView extends React.Component {
 MutableListView.defaultProps = {
   activeItems: [],
   isDraggable: true,
+  enableDeleteTransitions: false,
   onReorder: () => {},
 }
 
