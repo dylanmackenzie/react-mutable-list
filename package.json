@@ -26,5 +26,6 @@
     "list"
   ],
   "author": "Dylan MacKenzie <dylanxmackenzie@gmail.com> (http://winningendga.me/)",
+  "repository": "dylanmackenzie/react-mutable-list",
   "license": "MIT"
 }
