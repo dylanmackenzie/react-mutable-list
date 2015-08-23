@@ -1,4 +1,4 @@
-import List from './list.jsx'
-import ListItem from './list-item.jsx'
+import List from './list'
+import ListItem from './list-item'
 
 export { List, ListItem }

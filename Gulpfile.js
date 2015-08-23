@@ -12,6 +12,7 @@ let source = require('vinyl-source-stream')
 function runBabelify(entries, output) {
   return browserify({
       entries: entries,
+      extensions: ['.js', '.jsx'],
       paths: ['src/', 'node_modules/'],
     })
     .transform(babelify)
