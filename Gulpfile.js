@@ -17,7 +17,7 @@ function runBabelify(entries, output) {
     })
     .transform(babelify)
     .bundle()
-    .on('error', err => {
+    .on('error', function(err) {
       gutil.log(gutil.colors.red(err.message))
       this.emit('end')
     })
@@ -26,28 +26,28 @@ function runBabelify(entries, output) {
     .pipe(connect.reload())
 }
 
-gulp.task('serve', () => {
+gulp.task('serve', function () {
   connect.server({
     root: '.',
     livereload: true
   })
 })
 
-gulp.task('es6', () => {
+gulp.task('es6', function () {
   gulp.src(['src/list.jsx', 'src/list-item.jsx', 'src/index.js'])
     .pipe(babel())
     .pipe(gulp.dest('lib/'))
 })
 
-gulp.task('js', () => {
+gulp.task('js', function () {
   return runBabelify('src/index.js', { name: 'list.js', dir: 'dist/' })
 })
 
-gulp.task('demo', () => {
+gulp.task('demo', function () {
   return runBabelify('src/demo.jsx', { name: 'demo.js', dir: 'dist/' })
 })
 
-gulp.task('watch', () => {
+gulp.task('watch', function () {
   gulp.watch(['src/*'], ['js'])
 })
 
