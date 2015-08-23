@@ -5,6 +5,7 @@ let connect = require('gulp-connect')
 let sourcemaps = require('gulp-sourcemaps')
 let browserify = require('browserify')
 let babelify = require('babelify')
+let babel = require('gulp-babel')
 let gutil = require('gulp-util')
 let source = require('vinyl-source-stream')
 
@@ -15,9 +16,15 @@ gulp.task('serve', () => {
   })
 })
 
+gulp.task('es6', () => {
+  gulp.src(['src/list.jsx', 'src/list-item.jsx', 'src/index.js'])
+    .pipe(babel())
+    .pipe(gulp.dest('lib/'))
+})
+
 gulp.task('js', () => {
   return browserify({
-      entries: 'src/test.jsx',
+      entries: 'src/index.js',
       paths: ['src/', 'node_modules/'],
     })
     .transform(babelify)
