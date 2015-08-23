@@ -1,2 +1,4 @@
 Gulpfile.js
-index.js
+index.html
+dist/demo.js
+src/demo.jsx
