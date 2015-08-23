@@ -3,6 +3,24 @@ Mutable List
 
 A draggable, droppable and deletable list component for React.
 
+Installation
+------------
+
+This component is available as an npm module which contains the jsx
+source files in `src/`, the compiled commonJS ES5 files in `lib/`, and a
+standalone browserified version which includes the entire react library
+under `dist/list.js`.  To install, simply
+
+    npm install react-mutable-list
+
+The recommended usage is to require the module using commonJS syntax and
+then use browserify or webpack to package your code for the browser.
+
+```js
+var MutableList = require('react-mutable-list').List
+var MutableListItem = require('react-mutable-list').ListItem
+```
+
 Example
 -------
 
