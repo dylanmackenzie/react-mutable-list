@@ -9,6 +9,22 @@ let babel = require('gulp-babel')
 let gutil = require('gulp-util')
 let source = require('vinyl-source-stream')
 
+function runBabelify(entries, output) {
+  return browserify({
+      entries: entries,
+      paths: ['src/', 'node_modules/'],
+    })
+    .transform(babelify)
+    .bundle()
+    .on('error', err => {
+      gutil.log(gutil.colors.red(err.message))
+      this.emit('end')
+    })
+    .pipe(source(output.name))
+    .pipe(gulp.dest(output.dir))
+    .pipe(connect.reload())
+}
+
 gulp.task('serve', () => {
   connect.server({
     root: '.',
@@ -23,24 +39,16 @@ gulp.task('es6', () => {
 })
 
 gulp.task('js', () => {
-  return browserify({
-      entries: 'src/index.js',
-      paths: ['src/', 'node_modules/'],
-    })
-    .transform(babelify)
-    .bundle()
-    .on('error', err => {
-      gutil.log(gutil.colors.red(err.message))
-      this.emit('end')
-    })
-    .pipe(source('list.js'))
-    .pipe(gulp.dest('dist/'))
-    .pipe(connect.reload())
+  return runBabelify('src/index.js', { name: 'list.js', dir: 'dist/' })
+})
+
+gulp.task('demo', () => {
+  return runBabelify('src/demo.jsx', { name: 'demo.js', dir: 'dist/' })
 })
 
 gulp.task('watch', () => {
   gulp.watch(['src/*'], ['js'])
 })
 
-gulp.task('build', ['js'])
-gulp.task('default', ['watch', 'js', 'serve'])
+gulp.task('publish', ['js', 'es6'])
+gulp.task('default', ['watch', 'demo', 'serve'])
