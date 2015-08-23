@@ -24,7 +24,7 @@ var MutableListItem = require('react-mutable-list').ListItem
 Example
 -------
 
-```es6
+```js
 import React from 'react'
 import { List, ListItem } from 'react-mutable-list'
 
