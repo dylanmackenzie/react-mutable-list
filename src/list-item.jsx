@@ -1,6 +1,5 @@
 import React from 'react/addons'
-
-const classSet = window.classNames
+import classSet from 'classnames'
 
 const maxClickDuration = 200
 

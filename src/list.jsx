@@ -1,7 +1,7 @@
 import React from 'react/addons'
+import classSet from 'classnames'
 
 const ReactTransitionGroup = React.addons.TransitionGroup
-const classSet = window.classNames
 
 // A MutableListView represents a single list from which items can be
 // added, deleted, and rearranged.
