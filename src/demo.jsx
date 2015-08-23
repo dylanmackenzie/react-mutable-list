@@ -1,6 +1,5 @@
 import React from 'react/addons'
-import List from './list.jsx'
-import ListItem from './list-item.jsx'
+import { List, ListItem } from './index'
 
 class Controller extends React.Component {
   constructor(props) {
