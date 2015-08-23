@@ -63,4 +63,4 @@ class Controller extends React.Component {
 }
 ```
 
-For a more involved example, see `src/demo.jsx`
+For a more involved example, see [demo.jsx](https://github.com/dylanmackenzie/react-mutable-list/blob/master/src/demo.jsx)
