@@ -48,7 +48,7 @@ gulp.task('demo', function () {
 })
 
 gulp.task('watch', function () {
-  gulp.watch(['src/*'], ['js'])
+  gulp.watch(['src/*'], ['demo'])
 })
 
 gulp.task('publish', ['js', 'es6'])
