@@ -1,4 +1,3 @@
+gh-pages/
 Gulpfile.js
-index.html
-dist/demo.js
 src/demo.jsx

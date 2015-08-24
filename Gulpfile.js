@@ -28,7 +28,7 @@ function runBabelify(entries, output) {
 
 gulp.task('serve', function () {
   connect.server({
-    root: '.',
+    root: 'gh-pages',
     livereload: true
   })
 })
@@ -44,7 +44,7 @@ gulp.task('js', function () {
 })
 
 gulp.task('demo', function () {
-  return runBabelify('src/demo.jsx', { name: 'demo.js', dir: 'dist/' })
+  return runBabelify('src/demo.jsx', { name: 'demo.js', dir: 'gh-pages/' })
 })
 
 gulp.task('watch', function () {
