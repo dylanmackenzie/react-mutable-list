@@ -2,6 +2,7 @@ import React from 'react/addons'
 import classSet from 'classnames'
 
 const ReactTransitionGroup = React.addons.TransitionGroup
+const BEMSeparator = '--'
 
 // A MutableListView represents a single list from which items can be
 // added, deleted, and rearranged.
@@ -157,17 +158,22 @@ export default class MutableListView extends React.Component {
       })
     })
 
-    let classes = classSet('ReactList', {
-      'ReactList--dragging': this.state.dragItem != null,
-      'ReactList--deleting': this.state.deletedIndex !== -1,
+    let baseClass = 'ReactList'
+    if (this.props.className) {
+      baseClass = this.props.className.split(' ')
+    }
+
+    let className = classSet(this.props.className, {
+      [`${baseClass}${BEMSeparator}dragging`]: this.state.dragItem != null,
+      [`${baseClass}${BEMSeparator}deleting`]: this.state.deletedIndex !== -1,
     })
 
     if (this.props.enableDeleteTransitions) {
       return (
         <ReactTransitionGroup
           component='ul'
-          className={classes}
-          transitionName='ReactList-item-'
+          className={className}
+          transitionName={`${baseClass}-item-`}
         >
           {items}
         </ReactTransitionGroup>

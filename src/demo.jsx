@@ -61,6 +61,7 @@ class Controller extends React.Component {
   render() {
     let lis = this.state.content.map((content, i) => {
       let props = {
+        className: 'ReactList-item',
         onClick: e => this._onClick(i, e),
         onRemove: e => this._onRemove(i, e),
         isActive: this.state.actives[i],
@@ -76,7 +77,7 @@ class Controller extends React.Component {
     return (
       <div className='Demo'>
         <input className='Demo-input' type='text' value={this.state.input} onChange={e => this._onInputChange(e)} onKeyDown={e => this._onInputKey(e)} />
-        <List onReorder={(o, n) => this._onReorder(o, n)} enableDeleteTransitions={true} isDraggable={true}>
+        <List className='ReactList' onReorder={(o, n) => this._onReorder(o, n)} enableDeleteTransitions={true} isDraggable={true}>
           {lis}
         </List>
       </div>

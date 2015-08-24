@@ -2,6 +2,8 @@ import React from 'react/addons'
 import classSet from 'classnames'
 
 const maxClickDuration = 200
+const BEMSeparator = '--'
+const deleteButtonClass = 'Delete'
 
 export default class MutableListItem extends React.Component {
   constructor(props) {
@@ -105,14 +107,15 @@ export default class MutableListItem extends React.Component {
   }
 
   render() {
+    let baseClass = this.props.className && this.props.className.split(' ')[0] || 'ReactList-item'
     let props = {
       onMouseDown: e => this._onMouseDown(e),
       onMouseUp: e => this._onMouseUp(e),
       style: this.props.style,
       key: this.props.key,
-      className: classSet('ReactList-item', {
-        'ReactList-item--active': this.props.isActive,
-        'ReactList-item--dragging': this.state.isDragging
+      className: classSet(this.props.className, {
+        [`${baseClass}${BEMSeparator}active`]: this.props.isActive,
+        [`${baseClass}${BEMSeparator}dragging`]: this.state.isDragging
       }),
     }
 
@@ -120,7 +123,7 @@ export default class MutableListItem extends React.Component {
       <li {...props}>
         {this.props.children}
         <button
-          className={'ReactList-delete'}
+          className={`${baseClass}${deleteButtonClass}`}
           onMouseDown={e => e.stopPropagation()}
           onClick={this.props.onRemove}>x</button>
       </li>
