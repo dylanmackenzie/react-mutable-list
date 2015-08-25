@@ -76,7 +76,14 @@ class Controller extends React.Component {
 
     return (
       <div className='Demo'>
-        <input className='Demo-input' type='text' value={this.state.input} onChange={e => this._onInputChange(e)} onKeyDown={e => this._onInputKey(e)} />
+        <input
+          className='Demo-input'
+          type='text'
+          placeholder='Enter text here...'
+          value={this.state.input}
+          onChange={e => this._onInputChange(e)}
+          onKeyDown={e => this._onInputKey(e)}
+        />
         <List className='ReactList' onReorder={(o, n) => this._onReorder(o, n)} enableDeleteTransitions={true} isDraggable={true}>
           {lis}
         </List>
@@ -87,5 +94,5 @@ class Controller extends React.Component {
 
 React.render(
   <Controller />,
-  document.body
+  document.querySelector('div')
 )

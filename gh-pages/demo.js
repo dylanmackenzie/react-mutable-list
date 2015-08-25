@@ -22027,11 +22027,18 @@ var Controller = (function (_React$Component) {
       return _reactAddons2['default'].createElement(
         'div',
         { className: 'Demo' },
-        _reactAddons2['default'].createElement('input', { className: 'Demo-input', type: 'text', value: this.state.input, onChange: function (e) {
+        _reactAddons2['default'].createElement('input', {
+          className: 'Demo-input',
+          type: 'text',
+          placeholder: 'Enter text here...',
+          value: this.state.input,
+          onChange: function (e) {
             return _this3._onInputChange(e);
-          }, onKeyDown: function (e) {
+          },
+          onKeyDown: function (e) {
             return _this3._onInputKey(e);
-          } }),
+          }
+        }),
         _reactAddons2['default'].createElement(
           _index.List,
           { className: 'ReactList', onReorder: function (o, n) {
@@ -22046,7 +22053,7 @@ var Controller = (function (_React$Component) {
   return Controller;
 })(_reactAddons2['default'].Component);
 
-_reactAddons2['default'].render(_reactAddons2['default'].createElement(Controller, null), document.body);
+_reactAddons2['default'].render(_reactAddons2['default'].createElement(Controller, null), document.querySelector('div'));
 
 },{"./index":176,"react/addons":3}],176:[function(require,module,exports){
 'use strict';
