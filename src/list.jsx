@@ -124,9 +124,11 @@ export default class MutableListView extends React.Component {
     let items = React.Children.map(this.props.children, child => {
       let style = child.props.style || {}
       let isAfterDeleted = false
+      let enableTransformTransitions = false
       i += 1
 
       if (this.state.deletedIndex !== -1 && i >= this.state.deletedIndex) {
+        enableTransformTransitions = true
         style.transform = `translateY(-${itemHeight}px)`
         isAfterDeleted = true
       }
@@ -135,6 +137,7 @@ export default class MutableListView extends React.Component {
         if (i === this.state.dragItem.props.index) {
           style.transform = `translate(${transform[0]}px, ${transform[1]}px)`
         } else {
+          enableTransformTransitions = true
           if (newIndex < oldIndex) {
             if (i >= newIndex && i < oldIndex) {
               style.transform = `translateY(${itemHeight}px)`
@@ -150,6 +153,7 @@ export default class MutableListView extends React.Component {
       return React.cloneElement(child, {
         style: style,
         index: i,
+        enableTransformTransitions,
         onDragStart: this._onDragStart.bind(this),
         onDrag: this._onDrag.bind(this),
         onDragEnd: this._onDragEnd.bind(this),
@@ -181,7 +185,7 @@ export default class MutableListView extends React.Component {
     }
 
     return (
-      <ul className={classes}>
+      <ul className={className}>
         {items}
       </ul>
     )

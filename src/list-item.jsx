@@ -115,7 +115,8 @@ export default class MutableListItem extends React.Component {
       key: this.props.key,
       className: classSet(this.props.className, {
         [`${baseClass}${BEMSeparator}active`]: this.props.isActive,
-        [`${baseClass}${BEMSeparator}dragging`]: this.state.isDragging
+        [`${baseClass}${BEMSeparator}dragging`]: this.state.isDragging,
+        [`${baseClass}${BEMSeparator}enableTransformTransitions`]: this.props.enableTransformTransitions,
       }),
     }
 

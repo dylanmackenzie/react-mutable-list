@@ -22242,7 +22242,7 @@ var MutableListItem = (function (_React$Component) {
         },
         style: this.props.style,
         key: this.props.key,
-        className: (0, _classnames2['default'])(this.props.className, (_classSet = {}, _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'active', this.props.isActive), _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'dragging', this.state.isDragging), _classSet))
+        className: (0, _classnames2['default'])(this.props.className, (_classSet = {}, _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'active', this.props.isActive), _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'dragging', this.state.isDragging), _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'enableTransformTransitions', this.props.enableTransformTransitions), _classSet))
       };
 
       return _reactAddons2['default'].createElement(
@@ -22458,9 +22458,11 @@ var MutableListView = (function (_React$Component) {
       var items = _reactAddons2['default'].Children.map(this.props.children, function (child) {
         var style = child.props.style || {};
         var isAfterDeleted = false;
+        var enableTransformTransitions = false;
         i += 1;
 
         if (_this2.state.deletedIndex !== -1 && i >= _this2.state.deletedIndex) {
+          enableTransformTransitions = true;
           style.transform = 'translateY(-' + itemHeight + 'px)';
           isAfterDeleted = true;
         }
@@ -22469,6 +22471,7 @@ var MutableListView = (function (_React$Component) {
           if (i === _this2.state.dragItem.props.index) {
             style.transform = 'translate(' + transform[0] + 'px, ' + transform[1] + 'px)';
           } else {
+            enableTransformTransitions = true;
             if (newIndex < oldIndex) {
               if (i >= newIndex && i < oldIndex) {
                 style.transform = 'translateY(' + itemHeight + 'px)';
@@ -22484,6 +22487,7 @@ var MutableListView = (function (_React$Component) {
         return _reactAddons2['default'].cloneElement(child, {
           style: style,
           index: i,
+          enableTransformTransitions: enableTransformTransitions,
           onDragStart: _this2._onDragStart.bind(_this2),
           onDrag: _this2._onDrag.bind(_this2),
           onDragEnd: _this2._onDragEnd.bind(_this2),
@@ -22513,7 +22517,7 @@ var MutableListView = (function (_React$Component) {
 
       return _reactAddons2['default'].createElement(
         'ul',
-        { className: classes },
+        { className: className },
         items
       );
     }
