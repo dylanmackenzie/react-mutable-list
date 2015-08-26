@@ -1,7 +1,8 @@
 Mutable List
 ============
 
-A draggable, droppable and deletable list component for React.
+A [draggable, droppable and deletable list
+component](//dylanmackenzie.github.io/react-mutable-list) for React.
 
 Installation
 ------------
