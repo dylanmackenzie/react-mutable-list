@@ -33,8 +33,12 @@
     }
 
     .ReactList--dragging {
+        -moz-user-select: none;
         -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
+
 
     .ReactList-item {
         display: flex;
@@ -49,7 +53,6 @@
         border: 1px solid #dddddd;
         cursor: pointer;
         font-size: 1.2em;
-        -webkit-user-select: inherit;
 
         transition: border 200ms, opacity 400ms, box-shadow 300ms;
     }
@@ -62,7 +65,7 @@
         transition: transform 300ms, border 200ms, opacity 400ms, box-shadow 300ms;
     }
 
-    .ReactList--dragging .ReactList-item--dragging {
+    .ReactList-item--dragging {
         position: relative;
 
         box-shadow: 0px 2px 6px grey;
