@@ -18,6 +18,13 @@ export default class MutableListView extends React.Component {
       deletedHeight: 0,
       deletedCallback: null,
     }
+
+    // Bind event handlers
+    this.onDragStart         = this._onDragStart.bind(this)
+    this.onDrag              = this._onDrag.bind(this)
+    this.onDragEnd           = this._onDragEnd.bind(this)
+    this.onItemDelete        = this._onItemDelete.bind(this)
+    this.onItemTransitionEnd = this._onItemTransitionEnd.bind(this)
   }
 
   _onItemDelete(index, height, cb) {
@@ -121,16 +128,16 @@ export default class MutableListView extends React.Component {
     }
 
     let i = -1
+    let upTransformString = `translateY(-${itemHeight}px)`
+    let downTransformString = `translateY(${itemHeight}px)`
     let items = React.Children.map(this.props.children, child => {
       let style = child.props.style || {}
-      let isAfterDeleted = false
       let enableTransformTransitions = false
       i += 1
 
       if (this.state.deletedIndex !== -1 && i >= this.state.deletedIndex) {
         enableTransformTransitions = true
-        style.transform = `translateY(-${itemHeight}px)`
-        isAfterDeleted = true
+        style.transform = upTransformString
       }
 
       if (this.state.dragItem != null) {
@@ -140,11 +147,11 @@ export default class MutableListView extends React.Component {
           enableTransformTransitions = true
           if (newIndex < oldIndex) {
             if (i >= newIndex && i < oldIndex) {
-              style.transform = `translateY(${itemHeight}px)`
+              style.transform = downTransformString
             }
           } else {
             if (i > oldIndex && i <= newIndex) {
-              style.transform = `translateY(-${itemHeight}px)`
+              style.transform = upTransformString
             }
           }
         }
@@ -154,11 +161,11 @@ export default class MutableListView extends React.Component {
         style: style,
         index: i,
         enableTransformTransitions,
-        onDragStart: this._onDragStart.bind(this),
-        onDrag: this._onDrag.bind(this),
-        onDragEnd: this._onDragEnd.bind(this),
-        onDelete: this._onItemDelete.bind(this),
-        onTransitionEnd: this._onItemTransitionEnd.bind(this),
+        onDragStart: this.onDragStart,
+        onDrag: this.onDrag,
+        onDragEnd: this.onDragEnd,
+        onDelete: this.onItemDelete,
+        onTransitionEnd: this.onItemTransitionEnd,
       })
     })
 

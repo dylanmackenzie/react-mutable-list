@@ -22336,6 +22336,13 @@ var MutableListView = (function (_React$Component) {
       deletedHeight: 0,
       deletedCallback: null
     };
+
+    // Bind event handlers
+    this.onDragStart = this._onDragStart.bind(this);
+    this.onDrag = this._onDrag.bind(this);
+    this.onDragEnd = this._onDragEnd.bind(this);
+    this.onItemDelete = this._onItemDelete.bind(this);
+    this.onItemTransitionEnd = this._onItemTransitionEnd.bind(this);
   }
 
   _createClass(MutableListView, [{
@@ -22455,16 +22462,16 @@ var MutableListView = (function (_React$Component) {
       }
 
       var i = -1;
+      var upTransformString = 'translateY(-' + itemHeight + 'px)';
+      var downTransformString = 'translateY(' + itemHeight + 'px)';
       var items = _reactAddons2['default'].Children.map(this.props.children, function (child) {
         var style = child.props.style || {};
-        var isAfterDeleted = false;
         var enableTransformTransitions = false;
         i += 1;
 
         if (_this2.state.deletedIndex !== -1 && i >= _this2.state.deletedIndex) {
           enableTransformTransitions = true;
-          style.transform = 'translateY(-' + itemHeight + 'px)';
-          isAfterDeleted = true;
+          style.transform = upTransformString;
         }
 
         if (_this2.state.dragItem != null) {
@@ -22474,11 +22481,11 @@ var MutableListView = (function (_React$Component) {
             enableTransformTransitions = true;
             if (newIndex < oldIndex) {
               if (i >= newIndex && i < oldIndex) {
-                style.transform = 'translateY(' + itemHeight + 'px)';
+                style.transform = downTransformString;
               }
             } else {
               if (i > oldIndex && i <= newIndex) {
-                style.transform = 'translateY(-' + itemHeight + 'px)';
+                style.transform = upTransformString;
               }
             }
           }
@@ -22488,11 +22495,11 @@ var MutableListView = (function (_React$Component) {
           style: style,
           index: i,
           enableTransformTransitions: enableTransformTransitions,
-          onDragStart: _this2._onDragStart.bind(_this2),
-          onDrag: _this2._onDrag.bind(_this2),
-          onDragEnd: _this2._onDragEnd.bind(_this2),
-          onDelete: _this2._onItemDelete.bind(_this2),
-          onTransitionEnd: _this2._onItemTransitionEnd.bind(_this2)
+          onDragStart: _this2.onDragStart,
+          onDrag: _this2.onDrag,
+          onDragEnd: _this2.onDragEnd,
+          onDelete: _this2.onItemDelete,
+          onTransitionEnd: _this2.onItemTransitionEnd
         });
       });
 
