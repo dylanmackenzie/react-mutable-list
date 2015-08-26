@@ -58,8 +58,8 @@
         border: 1px solid magenta;
     }
 
-    .ReactList--dragging .ReactList-item, .ReactList--deleting .ReactList-item {
-        transition: border 200ms, opacity 400ms, transform 300ms, box-shadow 300ms;
+    .ReactList-item--enableTransformTransitions {
+        transition: transform 300ms, border 200ms, opacity 400ms, box-shadow 300ms;
     }
 
     .ReactList--dragging .ReactList-item--dragging {
@@ -68,8 +68,6 @@
         box-shadow: 0px 2px 6px grey;
         cursor: move;
         z-index: 10;
-
-        transition: border 200ms, opacity 400ms, box-shadow 300ms;
     }
 
     .ReactList-itemDelete {
