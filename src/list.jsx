@@ -200,10 +200,13 @@ export default class MutableListView extends React.Component {
 }
 
 MutableListView.defaultProps = {
-  activeItems: [],
-  isDraggable: true,
   enableDeleteTransitions: false,
   onReorder: () => {},
+}
+
+MutableListView.propTypes = {
+  enableDeleteTransitions: React.PropTypes.bool,
+  onReorder: React.PropTypes.func,
 }
 
 function pointerOffset(e, rect) {

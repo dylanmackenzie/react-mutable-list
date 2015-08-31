@@ -147,6 +147,20 @@ export default class MutableListItem extends React.Component {
   }
 }
 
+MutableListItem.defaultProps = {
+  onClick: () => {},
+  onRemove: () => {},
+  isActive: false,
+  enableTransformTransitions: false,
+}
+
+MutableListItem.propTypes = {
+  onClick: React.PropTypes.func,
+  onRemove: React.PropTypes.func,
+  isActive: React.PropTypes.bool,
+  enableTransformTransitions: React.PropTypes.bool,
+}
+
 function outerHeight(el) {
   let styles = window.getComputedStyle(el)
   let margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom)
