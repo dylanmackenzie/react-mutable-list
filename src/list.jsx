@@ -119,7 +119,7 @@ export default class MutableListView extends React.Component {
 
   render() {
     const newIndex = this.state.dragIndex
-    const oldIndex = this.state.dragItem.props.index
+    const oldIndex = this.state.dragItem && this.state.dragItem.props.index
     const maxIndex = Math.max(newIndex, oldIndex)
     const minIndex = Math.min(newIndex, oldIndex)
 
@@ -130,9 +130,9 @@ export default class MutableListView extends React.Component {
 
     const upTransformString = `translateY(-${itemHeight}px)`
     const downTransformString = `translateY(${itemHeight}px)`
-    const deleteTransformString = (newIndex < oldIndex)
-      ? upTransformString
-      : downTransformString
+    const dragTransformString = (newIndex < oldIndex)
+      ? downTransformString
+      : upTransformString
 
     const items = React.Children.map(this.props.children, (child, i) => {
       let style = child.props.style || {}
@@ -148,8 +148,8 @@ export default class MutableListView extends React.Component {
           style.transform = `translate(${transform[0]}px, ${transform[1]}px)`
         } else {
           enableTransformTransitions = true
-          if (i >= minIndex && i < maxIndex) {
-            style.transform = deleteTransformString
+          if (i >= minIndex && i <= maxIndex) {
+            style.transform = dragTransformString
           }
         }
       }
