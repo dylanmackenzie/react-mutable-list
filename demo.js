@@ -22289,6 +22289,20 @@ var MutableListItem = (function (_React$Component) {
 
 exports['default'] = MutableListItem;
 
+MutableListItem.defaultProps = {
+  onClick: function onClick() {},
+  onRemove: function onRemove() {},
+  isActive: false,
+  enableTransformTransitions: false
+};
+
+MutableListItem.propTypes = {
+  onClick: _reactAddons2['default'].PropTypes.func,
+  onRemove: _reactAddons2['default'].PropTypes.func,
+  isActive: _reactAddons2['default'].PropTypes.bool,
+  enableTransformTransitions: _reactAddons2['default'].PropTypes.bool
+};
+
 function outerHeight(el) {
   var styles = window.getComputedStyle(el);
   var margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
@@ -22557,10 +22571,13 @@ var MutableListView = (function (_React$Component) {
 exports['default'] = MutableListView;
 
 MutableListView.defaultProps = {
-  activeItems: [],
-  isDraggable: true,
   enableDeleteTransitions: false,
   onReorder: function onReorder() {}
+};
+
+MutableListView.propTypes = {
+  enableDeleteTransitions: _reactAddons2['default'].PropTypes.bool,
+  onReorder: _reactAddons2['default'].PropTypes.func
 };
 
 function pointerOffset(e, rect) {
