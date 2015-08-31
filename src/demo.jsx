@@ -10,11 +10,11 @@ class Controller extends React.Component {
     this.state = {
       actives: [true, false, false, false, false],
       content: ['hallo', 'world', 'was', 'geht', 'ab'],
-      input: ''
+      input: '',
     }
   }
 
-  _onClick(i, e) {
+  _onClick(i, _e) {
     this.setState(state => {
       state.actives[state.actives.indexOf(true)] = false
       state.actives[i] = true
@@ -23,12 +23,12 @@ class Controller extends React.Component {
 
   _onReorder(old, neu) {
     this.setState(state => {
-      let tmp = this.state.content[old]
-      this.state.content.splice(old, 1)
-      this.state.content.splice(neu, 0, tmp)
-      tmp = this.state.actives[old]
-      this.state.actives.splice(old, 1)
-      this.state.actives.splice(neu, 0, tmp)
+      let tmp = state.content[old]
+      state.content.splice(old, 1)
+      state.content.splice(neu, 0, tmp)
+      tmp = state.actives[old]
+      state.actives.splice(old, 1)
+      state.actives.splice(neu, 0, tmp)
     })
   }
 
@@ -37,14 +37,14 @@ class Controller extends React.Component {
     e.preventDefault()
 
     this.setState(state => {
-      this.state.content.splice(i, 1)
-      this.state.actives.splice(i, 1)
+      state.content.splice(i, 1)
+      state.actives.splice(i, 1)
     })
   }
 
-  _onInputChange(e) {
+  _onInputChange(_e) {
     this.setState({
-      input: event.target.value
+      input: event.target.value,
     })
   }
 
@@ -53,16 +53,16 @@ class Controller extends React.Component {
       return
     }
 
-    this.state.content.push(this.state.input)
-    this.state.actives.push(false)
-    this.setState({
-      input: ''
+    this.setState(state => {
+      state.content.push(state.input)
+      state.actives.push(false)
+      return { input: '' }
     })
   }
 
   render() {
-    let lis = this.state.content.map((content, i) => {
-      let props = {
+    const lis = this.state.content.map((content, i) => {
+      const props = {
         className: 'ReactList-item',
         onClick: e => this._onClick(i, e),
         onRemove: e => this._onRemove(i, e),

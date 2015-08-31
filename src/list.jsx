@@ -20,10 +20,10 @@ export default class MutableListView extends React.Component {
     }
 
     // Bind event handlers
-    this.onDragStart         = this._onDragStart.bind(this)
-    this.onDrag              = this._onDrag.bind(this)
-    this.onDragEnd           = this._onDragEnd.bind(this)
-    this.onItemDelete        = this._onItemDelete.bind(this)
+    this.onDragStart = this._onDragStart.bind(this)
+    this.onDrag = this._onDrag.bind(this)
+    this.onDragEnd = this._onDragEnd.bind(this)
+    this.onItemDelete = this._onItemDelete.bind(this)
     this.onItemTransitionEnd = this._onItemTransitionEnd.bind(this)
   }
 
@@ -49,7 +49,7 @@ export default class MutableListView extends React.Component {
     })
   }
 
-  _onItemTransitionEnd(index, e) {
+  _onItemTransitionEnd(_index, e) {
     if (this.state.deletedCallback == null || e.propertyName !== 'transform') {
       return
     }
@@ -57,7 +57,7 @@ export default class MutableListView extends React.Component {
     this._onItemDeleted()
   }
 
-  _onDragStart(item, e) {
+  _onDragStart(item, _e) {
     this.setState({
       dragItem: item,
       dragIndex: this._getNewIndex(item),
@@ -66,47 +66,46 @@ export default class MutableListView extends React.Component {
   }
 
   _onDrag(item, e) {
-    let offset = item.dragOffset
-    let delta = pointerOffset(e, item.getBoundingClientRect())
+    const offset = item.dragOffset
+    const delta = pointerOffset(e, item.getBoundingClientRect())
 
     this.setState(state => ({
       dragIndex: this._getNewIndex(item),
       dragTransform: [
         state.dragTransform[0] + delta[0] - offset[0],
-        state.dragTransform[1] + delta[1] - offset[1]
-      ]
+        state.dragTransform[1] + delta[1] - offset[1],
+      ],
     }))
   }
 
-  _onDragEnd(item, e) {
-    let oldIndex = item.props.index
-    let newIndex = this._getNewIndex(item)
+  _onDragEnd(item, _e) {
+    const oldIndex = item.props.index
+    const newIndex = this._getNewIndex(item)
 
     if (oldIndex !== newIndex) {
       this.props.onReorder(oldIndex, newIndex)
     }
 
     this.setState({
-      dragItem: null
+      dragItem: null,
     })
   }
 
   _getNewIndex(item) {
-    let offset = item.dragOffset
-    let rect = item.getBoundingClientRect()
-    let midpoint = rect.top + rect.height / 2
+    const rect = item.getBoundingClientRect()
+    const midpoint = rect.top + rect.height / 2
 
     // Find the top of the list in terms of the client viewport,
-    let list = React.findDOMNode(this)
-    let stop = list.getBoundingClientRect().top
+    const list = React.findDOMNode(this)
 
     // Search through every list item and find the appropriate index
+    let stop = list.getBoundingClientRect().top
     let newIndex = 0
     for (let i = 0, len = list.children.length; i < len; i++) {
-      let el = list.children[i]
-      let styles = window.getComputedStyle(el)
-      let margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom)
-      let height = el.offsetHeight + margin
+      const el = list.children[i]
+      const styles = window.getComputedStyle(el)
+      const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom)
+      const height = el.offsetHeight + margin
       stop += height
       if (stop > midpoint) {
         break
@@ -119,21 +118,25 @@ export default class MutableListView extends React.Component {
   }
 
   render() {
-    let transform, newIndex, oldIndex, itemHeight = this.state.deletedHeight
-    if (this.state.dragItem != null) {
-      transform = this.state.dragTransform
-      itemHeight = this.state.dragItem.getOuterHeight()
-      newIndex = this.state.dragIndex
-      oldIndex = this.state.dragItem.props.index
-    }
+    const newIndex = this.state.dragIndex
+    const oldIndex = this.state.dragItem.props.index
+    const maxIndex = Math.max(newIndex, oldIndex)
+    const minIndex = Math.min(newIndex, oldIndex)
 
-    let i = -1
-    let upTransformString = `translateY(-${itemHeight}px)`
-    let downTransformString = `translateY(${itemHeight}px)`
-    let items = React.Children.map(this.props.children, child => {
+    const transform = this.state.dragTransform
+    const itemHeight = (this.state.dragItem != null)
+      ? this.state.dragItem.getOuterHeight()
+      : this.state.deletedHeight
+
+    const upTransformString = `translateY(-${itemHeight}px)`
+    const downTransformString = `translateY(${itemHeight}px)`
+    const deleteTransformString = (newIndex < oldIndex)
+      ? upTransformString
+      : downTransformString
+
+    const items = React.Children.map(this.props.children, (child, i) => {
       let style = child.props.style || {}
       let enableTransformTransitions = false
-      i += 1
 
       if (this.state.deletedIndex !== -1 && i >= this.state.deletedIndex) {
         enableTransformTransitions = true
@@ -145,20 +148,14 @@ export default class MutableListView extends React.Component {
           style.transform = `translate(${transform[0]}px, ${transform[1]}px)`
         } else {
           enableTransformTransitions = true
-          if (newIndex < oldIndex) {
-            if (i >= newIndex && i < oldIndex) {
-              style.transform = downTransformString
-            }
-          } else {
-            if (i > oldIndex && i <= newIndex) {
-              style.transform = upTransformString
-            }
+          if (i >= minIndex && i < maxIndex) {
+            style.transform = deleteTransformString
           }
         }
       }
 
       return React.cloneElement(child, {
-        style: style,
+        style,
         index: i,
         enableTransformTransitions,
         onDragStart: this.onDragStart,
@@ -174,7 +171,7 @@ export default class MutableListView extends React.Component {
       baseClass = this.props.className.split(' ')
     }
 
-    let className = classSet(this.props.className, {
+    const className = classSet(this.props.className, {
       [`${baseClass}${BEMSeparator}dragging`]: this.state.dragItem != null,
       [`${baseClass}${BEMSeparator}deleting`]: this.state.deletedIndex !== -1,
     })
@@ -210,10 +207,10 @@ MutableListView.propTypes = {
 }
 
 function pointerOffset(e, rect) {
-  let clientX = e.targetTouches ? e.targetTouches[0].clientX : e.clientX
-  let clientY = e.targetTouches ? e.targetTouches[0].clientY : e.clientY
-  let x = clientX - rect.left
-  let y = clientY - rect.top
+  const clientX = e.targetTouches ? e.targetTouches[0].clientX : e.clientX
+  const clientY = e.targetTouches ? e.targetTouches[0].clientY : e.clientY
+  const x = clientX - rect.left
+  const y = clientY - rect.top
 
   // console.log([clientX, clientY], [rect.left, rect.top])
 

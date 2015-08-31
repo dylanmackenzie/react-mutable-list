@@ -10,7 +10,7 @@ export default class MutableListItem extends React.Component {
     super(props)
 
     this.state = {
-      isDragging: false
+      isDragging: false,
     }
 
     this.dragOffset = [0, 0]
@@ -35,7 +35,7 @@ export default class MutableListItem extends React.Component {
 
   // Calculate dimensions when an element is mounted
   componentDidMount() {
-    let el = React.findDOMNode(this)
+    const el = React.findDOMNode(this)
     this._outerHeight = outerHeight(el)
     this._boundingClientRect = el.getBoundingClientRect()
 
@@ -46,20 +46,20 @@ export default class MutableListItem extends React.Component {
 
   // Recalculate dimensions when an element is updated
   componentDidUpdate() {
-    let el = React.findDOMNode(this)
+    const el = React.findDOMNode(this)
     this._outerHeight = outerHeight(el)
     this._boundingClientRect = el.getBoundingClientRect()
   }
 
   componentWillLeave(cb) {
-    let el = React.findDOMNode(this)
+    const el = React.findDOMNode(this)
     el.style.visibility = 'hidden'
     this.props.onDelete(this.props.index, this.getOuterHeight(), cb)
   }
 
   // Determine if we have a click or a drag
   _onMouseDown(e) {
-    let el = React.findDOMNode(this)
+    const el = React.findDOMNode(this)
     this._boundingClientRect = el.getBoundingClientRect()
     this._clickFlag = true
 
@@ -92,7 +92,7 @@ export default class MutableListItem extends React.Component {
     this.dragOffset = pointerOffset(e, this.getBoundingClientRect())
     this.props.onDragStart(this, e)
     this.setState({
-      isDragging: true
+      isDragging: true,
     })
   }
 
@@ -115,13 +115,13 @@ export default class MutableListItem extends React.Component {
     window.removeEventListener('touchend', this._handlers.mouseUp)
     this.props.onDragEnd(this, e)
     this.setState({
-      isDragging: false
+      isDragging: false,
     })
   }
 
   render() {
-    let baseClass = this.props.className && this.props.className.split(' ')[0] || 'ReactList-item'
-    let props = {
+    const baseClass = this.props.className && this.props.className.split(' ')[0] || 'ReactList-item'
+    const props = {
       onMouseDown: e => this._onMouseDown(e),
       onTouchStart: e => this._onMouseDown(e),
       onMouseUp: e => this._onMouseUp(e),
@@ -162,17 +162,17 @@ MutableListItem.propTypes = {
 }
 
 function outerHeight(el) {
-  let styles = window.getComputedStyle(el)
-  let margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom)
+  const styles = window.getComputedStyle(el)
+  const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom)
 
   return el.offsetHeight + margin
 }
 
 function pointerOffset(e, rect) {
-  let clientX = e.touches ? e.touches[0].clientX : e.clientX
-  let clientY = e.touches ? e.touches[0].clientY : e.clientY
-  let x = clientX - rect.left
-  let y = clientY - rect.top
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY
+  const x = clientX - rect.left
+  const y = clientY - rect.top
 
   // console.log([clientX, clientY], [rect.left, rect.top])
 
