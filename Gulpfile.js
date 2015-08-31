@@ -29,7 +29,9 @@ function runBabelify(entries, output) {
 gulp.task('serve', function () {
   connect.server({
     root: 'gh-pages',
-    livereload: true
+    livereload: true,
+    // host: '0.0.0.0',
+    port: '8080'
   })
 })
 
