@@ -207,8 +207,8 @@ MutableListView.defaultProps = {
 }
 
 function pointerOffset(e, rect) {
-  let clientX = e.touches ? e.touches[0].clientX : e.clientX
-  let clientY = e.touches ? e.touches[0].clientY : e.clientY
+  let clientX = e.targetTouches ? e.targetTouches[0].clientX : e.clientX
+  let clientY = e.targetTouches ? e.targetTouches[0].clientY : e.clientY
   let x = clientX - rect.left
   let y = clientY - rect.top
 

@@ -36,11 +36,12 @@ export default class MutableListItem extends React.Component {
   // Calculate dimensions when an element is mounted
   componentDidMount() {
     let el = React.findDOMNode(this)
+    this._outerHeight = outerHeight(el)
+    this._boundingClientRect = el.getBoundingClientRect()
+
     el.addEventListener('transitionend', e => {
       this.props.onTransitionEnd(this.props.index, e)
     })
-    this._outerHeight = outerHeight(el)
-    this._boundingClientRect = el.getBoundingClientRect()
   }
 
   // Recalculate dimensions when an element is updated
@@ -85,7 +86,9 @@ export default class MutableListItem extends React.Component {
 
     this._clickFlag = false
     window.addEventListener('mousemove', this._handlers.mouseMove)
+    window.addEventListener('touchmove', this._handlers.mouseMove)
     window.addEventListener('mouseup', this._handlers.mouseUp)
+    window.addEventListener('touchend', this._handlers.mouseUp)
     this.dragOffset = pointerOffset(e, this.getBoundingClientRect())
     this.props.onDragStart(this, e)
     this.setState({
@@ -94,12 +97,22 @@ export default class MutableListItem extends React.Component {
   }
 
   _onDrag(e) {
+    if (e.targetTouches != null) {
+      e.preventDefault()
+    }
+
     this.props.onDrag(this, e)
   }
 
   _onDragEnd(e) {
+    if (e.targetTouches != null) {
+      e.preventDefault()
+    }
+
     window.removeEventListener('mousemove', this._handlers.mouseMove)
+    window.removeEventListener('touchmove', this._handlers.mouseMove)
     window.removeEventListener('mouseup', this._handlers.mouseUp)
+    window.removeEventListener('touchend', this._handlers.mouseUp)
     this.props.onDragEnd(this, e)
     this.setState({
       isDragging: false
@@ -110,7 +123,9 @@ export default class MutableListItem extends React.Component {
     let baseClass = this.props.className && this.props.className.split(' ')[0] || 'ReactList-item'
     let props = {
       onMouseDown: e => this._onMouseDown(e),
+      onTouchStart: e => this._onMouseDown(e),
       onMouseUp: e => this._onMouseUp(e),
+      onTouchEnd: e => this._onMouseUp(e),
       style: this.props.style,
       key: this.props.key,
       className: classSet(this.props.className, {

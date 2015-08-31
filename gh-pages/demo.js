@@ -21930,6 +21930,8 @@ var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
 var _index = require('./index');
 
+_reactAddons2['default'].initializeTouchEvents(true);
+
 var Controller = (function (_React$Component) {
   _inherits(Controller, _React$Component);
 
@@ -22148,11 +22150,12 @@ var MutableListItem = (function (_React$Component) {
       var _this = this;
 
       var el = _reactAddons2['default'].findDOMNode(this);
+      this._outerHeight = outerHeight(el);
+      this._boundingClientRect = el.getBoundingClientRect();
+
       el.addEventListener('transitionend', function (e) {
         _this.props.onTransitionEnd(_this.props.index, e);
       });
-      this._outerHeight = outerHeight(el);
-      this._boundingClientRect = el.getBoundingClientRect();
     }
 
     // Recalculate dimensions when an element is updated
@@ -22204,7 +22207,9 @@ var MutableListItem = (function (_React$Component) {
 
       this._clickFlag = false;
       window.addEventListener('mousemove', this._handlers.mouseMove);
+      window.addEventListener('touchmove', this._handlers.mouseMove);
       window.addEventListener('mouseup', this._handlers.mouseUp);
+      window.addEventListener('touchend', this._handlers.mouseUp);
       this.dragOffset = pointerOffset(e, this.getBoundingClientRect());
       this.props.onDragStart(this, e);
       this.setState({
@@ -22214,13 +22219,23 @@ var MutableListItem = (function (_React$Component) {
   }, {
     key: '_onDrag',
     value: function _onDrag(e) {
+      if (e.targetTouches != null) {
+        e.preventDefault();
+      }
+
       this.props.onDrag(this, e);
     }
   }, {
     key: '_onDragEnd',
     value: function _onDragEnd(e) {
+      if (e.targetTouches != null) {
+        e.preventDefault();
+      }
+
       window.removeEventListener('mousemove', this._handlers.mouseMove);
+      window.removeEventListener('touchmove', this._handlers.mouseMove);
       window.removeEventListener('mouseup', this._handlers.mouseUp);
+      window.removeEventListener('touchend', this._handlers.mouseUp);
       this.props.onDragEnd(this, e);
       this.setState({
         isDragging: false
@@ -22237,7 +22252,13 @@ var MutableListItem = (function (_React$Component) {
         onMouseDown: function onMouseDown(e) {
           return _this2._onMouseDown(e);
         },
+        onTouchStart: function onTouchStart(e) {
+          return _this2._onMouseDown(e);
+        },
         onMouseUp: function onMouseUp(e) {
+          return _this2._onMouseUp(e);
+        },
+        onTouchEnd: function onTouchEnd(e) {
           return _this2._onMouseUp(e);
         },
         style: this.props.style,
@@ -22543,8 +22564,8 @@ MutableListView.defaultProps = {
 };
 
 function pointerOffset(e, rect) {
-  var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  var clientX = e.targetTouches ? e.targetTouches[0].clientX : e.clientX;
+  var clientY = e.targetTouches ? e.targetTouches[0].clientY : e.clientY;
   var x = clientX - rect.left;
   var y = clientY - rect.top;
 

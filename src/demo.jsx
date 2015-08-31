@@ -1,6 +1,8 @@
 import React from 'react/addons'
 import { List, ListItem } from './index'
 
+React.initializeTouchEvents(true)
+
 class Controller extends React.Component {
   constructor(props) {
     super(props)
