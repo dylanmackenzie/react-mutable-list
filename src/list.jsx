@@ -118,7 +118,9 @@ export default class MutableListView extends React.Component {
 
   render() {
     const newIndex = this.state.dragIndex
-    const oldIndex = this.state.dragItem && this.state.dragItem.props.index
+    const oldIndex = (this.state.dragItem != null)
+      ? this.state.dragItem.props.index
+      : -1
     const maxIndex = Math.max(newIndex, oldIndex)
     const minIndex = Math.min(newIndex, oldIndex)
 
