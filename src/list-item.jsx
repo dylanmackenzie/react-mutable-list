@@ -140,7 +140,8 @@ export default class MutableListItem extends React.Component {
         {this.props.children}
         <button
           className={`${baseClass}${deleteButtonClass}`}
-          onMouseDown={e => e.stopPropagation()}
+          onMouseDown={stopPropagation}
+          onTouchStart={stopPropagation}
           onClick={this.props.onRemove}>x</button>
       </li>
     )
@@ -159,6 +160,10 @@ MutableListItem.propTypes = {
   onRemove: React.PropTypes.func,
   isActive: React.PropTypes.bool,
   enableTransformTransitions: React.PropTypes.bool,
+}
+
+function stopPropagation(e) {
+  e.stopPropagation()
 }
 
 function outerHeight(el) {
