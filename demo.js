@@ -22586,7 +22586,7 @@ var MutableListView = (function (_React$Component) {
           _this2 = this;
 
       var newIndex = this.state.dragIndex;
-      var oldIndex = this.state.dragItem && this.state.dragItem.props.index;
+      var oldIndex = this.state.dragItem != null ? this.state.dragItem.props.index : -1;
       var maxIndex = Math.max(newIndex, oldIndex);
       var minIndex = Math.min(newIndex, oldIndex);
 
