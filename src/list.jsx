@@ -1,6 +1,7 @@
 import React from 'react/addons'
 import classSet from 'classnames'
 import autobind from 'autobind-decorator'
+import pureRender from 'pure-render-decorator'
 import { pointerOffset, outerHeight } from 'utils'
 
 const ReactTransitionGroup = React.addons.TransitionGroup
@@ -8,7 +9,8 @@ const BEMSeparator = '--'
 
 // A MutableListView represents a single list from which items can be
 // added, deleted, and rearranged.
-export default class MutableListView extends React.Component {
+@pureRender
+class MutableListView extends React.Component {
   constructor(props) {
     super(props)
 
@@ -204,3 +206,5 @@ MutableListView.propTypes = {
   enableDeleteTransitions: React.PropTypes.bool,
   onReorder: React.PropTypes.func,
 }
+
+export default MutableListView

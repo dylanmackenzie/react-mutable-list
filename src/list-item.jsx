@@ -1,6 +1,7 @@
 import React from 'react/addons'
 import classSet from 'classnames'
 import autobind from 'autobind-decorator'
+import pureRender from 'pure-render-decorator'
 import { pointerOffset, outerHeight } from 'utils'
 
 const maxClickDuration = 200
@@ -10,7 +11,8 @@ function stopPropagation(e) {
   e.stopPropagation()
 }
 
-export default class MutableListItem extends React.Component {
+@pureRender
+class MutableListItem extends React.Component {
   constructor(props) {
     super(props)
 
@@ -164,3 +166,5 @@ MutableListItem.propTypes = {
   isActive: React.PropTypes.bool,
   enableTransformTransitions: React.PropTypes.bool,
 }
+
+export default MutableListItem
