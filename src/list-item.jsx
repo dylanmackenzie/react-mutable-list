@@ -1,10 +1,14 @@
 import React from 'react/addons'
 import classSet from 'classnames'
 import autobind from 'autobind-decorator'
+import { pointerOffset, outerHeight } from 'utils'
 
 const maxClickDuration = 200
 const BEMSeparator = '--'
 const deleteButtonClass = 'Delete'
+function stopPropagation(e) {
+  e.stopPropagation()
+}
 
 export default class MutableListItem extends React.Component {
   constructor(props) {
@@ -159,26 +163,4 @@ MutableListItem.propTypes = {
   onRemove: React.PropTypes.func,
   isActive: React.PropTypes.bool,
   enableTransformTransitions: React.PropTypes.bool,
-}
-
-function stopPropagation(e) {
-  e.stopPropagation()
-}
-
-function outerHeight(el) {
-  const styles = window.getComputedStyle(el)
-  const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom)
-
-  return el.offsetHeight + margin
-}
-
-function pointerOffset(e, rect) {
-  const clientX = e.touches ? e.touches[0].clientX : e.clientX
-  const clientY = e.touches ? e.touches[0].clientY : e.clientY
-  const x = clientX - rect.left
-  const y = clientY - rect.top
-
-  // console.log([clientX, clientY], [rect.left, rect.top])
-
-  return [x, y]
 }

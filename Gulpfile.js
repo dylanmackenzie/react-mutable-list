@@ -38,7 +38,7 @@ gulp.task('serve', function () {
 })
 
 gulp.task('es6', function () {
-  gulp.src(['src/list.jsx', 'src/list-item.jsx', 'src/index.js'])
+  gulp.src(['src/list.jsx', 'src/list-item.jsx', 'src/index.js', 'src/utils.js'])
     .pipe(babel({ optional: ['es7.decorators'] }))
     .pipe(gulp.dest('lib/'))
 })

@@ -1,6 +1,7 @@
 import React from 'react/addons'
 import classSet from 'classnames'
 import autobind from 'autobind-decorator'
+import { pointerOffset, outerHeight } from 'utils'
 
 const ReactTransitionGroup = React.addons.TransitionGroup
 const BEMSeparator = '--'
@@ -102,10 +103,7 @@ export default class MutableListView extends React.Component {
     let newIndex = 0
     for (let i = 0, len = list.children.length; i < len; i++) {
       const el = list.children[i]
-      const styles = window.getComputedStyle(el)
-      const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom)
-      const height = el.offsetHeight + margin
-      stop += height
+      stop += outerHeight(el)
       if (stop > midpoint) {
         break
       } else {
@@ -205,15 +203,4 @@ MutableListView.defaultProps = {
 MutableListView.propTypes = {
   enableDeleteTransitions: React.PropTypes.bool,
   onReorder: React.PropTypes.func,
-}
-
-function pointerOffset(e, rect) {
-  const clientX = e.targetTouches ? e.targetTouches[0].clientX : e.clientX
-  const clientY = e.targetTouches ? e.targetTouches[0].clientY : e.clientY
-  const x = clientX - rect.left
-  const y = clientY - rect.top
-
-  // console.log([clientX, clientY], [rect.left, rect.top])
-
-  return [x, y]
 }
