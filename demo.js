@@ -22202,9 +22202,14 @@ var _autobindDecorator = require('autobind-decorator');
 
 var _autobindDecorator2 = _interopRequireDefault(_autobindDecorator);
 
+var _utils = require('utils');
+
 var maxClickDuration = 200;
 var BEMSeparator = '--';
 var deleteButtonClass = 'Delete';
+function stopPropagation(e) {
+  e.stopPropagation();
+}
 
 var MutableListItem = (function (_React$Component) {
   _inherits(MutableListItem, _React$Component);
@@ -22244,7 +22249,7 @@ var MutableListItem = (function (_React$Component) {
       var _this = this;
 
       var el = _reactAddons2['default'].findDOMNode(this);
-      this._outerHeight = outerHeight(el);
+      this._outerHeight = (0, _utils.outerHeight)(el);
       this._boundingClientRect = el.getBoundingClientRect();
 
       el.addEventListener('transitionend', function (e) {
@@ -22257,7 +22262,7 @@ var MutableListItem = (function (_React$Component) {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
       var el = _reactAddons2['default'].findDOMNode(this);
-      this._outerHeight = outerHeight(el);
+      this._outerHeight = (0, _utils.outerHeight)(el);
       this._boundingClientRect = el.getBoundingClientRect();
     }
   }, {
@@ -22304,7 +22309,7 @@ var MutableListItem = (function (_React$Component) {
       window.addEventListener('touchmove', this._onDrag);
       window.addEventListener('mouseup', this._onDragEnd);
       window.addEventListener('touchend', this._onDragEnd);
-      this.dragOffset = pointerOffset(e, this.getBoundingClientRect());
+      this.dragOffset = (0, _utils.pointerOffset)(e, this.getBoundingClientRect());
       this.props.onDragStart(this, e);
       this.setState({
         isDragging: true
@@ -22397,31 +22402,9 @@ MutableListItem.propTypes = {
   isActive: _reactAddons2['default'].PropTypes.bool,
   enableTransformTransitions: _reactAddons2['default'].PropTypes.bool
 };
-
-function stopPropagation(e) {
-  e.stopPropagation();
-}
-
-function outerHeight(el) {
-  var styles = window.getComputedStyle(el);
-  var margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-
-  return el.offsetHeight + margin;
-}
-
-function pointerOffset(e, rect) {
-  var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  var x = clientX - rect.left;
-  var y = clientY - rect.top;
-
-  // console.log([clientX, clientY], [rect.left, rect.top])
-
-  return [x, y];
-}
 module.exports = exports['default'];
 
-},{"autobind-decorator":1,"classnames":3,"react/addons":4}],179:[function(require,module,exports){
+},{"autobind-decorator":1,"classnames":3,"react/addons":4,"utils":180}],179:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -22451,6 +22434,8 @@ var _classnames2 = _interopRequireDefault(_classnames);
 var _autobindDecorator = require('autobind-decorator');
 
 var _autobindDecorator2 = _interopRequireDefault(_autobindDecorator);
+
+var _utils = require('utils');
 
 var ReactTransitionGroup = _reactAddons2['default'].addons.TransitionGroup;
 var BEMSeparator = '--';
@@ -22528,7 +22513,7 @@ var MutableListView = (function (_React$Component) {
       var _this = this;
 
       var offset = item.dragOffset;
-      var delta = pointerOffset(e, item.getBoundingClientRect());
+      var delta = (0, _utils.pointerOffset)(e, item.getBoundingClientRect());
 
       this.setState(function (state) {
         return {
@@ -22566,10 +22551,7 @@ var MutableListView = (function (_React$Component) {
       var newIndex = 0;
       for (var i = 0, len = list.children.length; i < len; i++) {
         var el = list.children[i];
-        var styles = window.getComputedStyle(el);
-        var margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-        var height = el.offsetHeight + margin;
-        stop += height;
+        stop += (0, _utils.outerHeight)(el);
         if (stop > midpoint) {
           break;
         } else {
@@ -22670,6 +22652,16 @@ MutableListView.propTypes = {
   enableDeleteTransitions: _reactAddons2['default'].PropTypes.bool,
   onReorder: _reactAddons2['default'].PropTypes.func
 };
+module.exports = exports['default'];
+
+},{"autobind-decorator":1,"classnames":3,"react/addons":4,"utils":180}],180:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.pointerOffset = pointerOffset;
+exports.outerHeight = outerHeight;
 
 function pointerOffset(e, rect) {
   var clientX = e.targetTouches ? e.targetTouches[0].clientX : e.clientX;
@@ -22681,6 +22673,12 @@ function pointerOffset(e, rect) {
 
   return [x, y];
 }
-module.exports = exports['default'];
 
-},{"autobind-decorator":1,"classnames":3,"react/addons":4}]},{},[176]);
+function outerHeight(el) {
+  var styles = window.getComputedStyle(el);
+  var margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
+
+  return el.offsetHeight + margin;
+}
+
+},{}]},{},[176]);
