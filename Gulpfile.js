@@ -15,7 +15,9 @@ function runBabelify(entries, output) {
       extensions: ['.js', '.jsx'],
       paths: ['src/', 'node_modules/'],
     })
-    .transform(babelify)
+    .transform(babelify.configure({
+      optional: ['es7.decorators']
+    }))
     .bundle()
     .on('error', function(err) {
       gutil.log(gutil.colors.red(err.message))
@@ -37,7 +39,7 @@ gulp.task('serve', function () {
 
 gulp.task('es6', function () {
   gulp.src(['src/list.jsx', 'src/list-item.jsx', 'src/index.js'])
-    .pipe(babel())
+    .pipe(babel({ optional: ['es7.decorators'] }))
     .pipe(gulp.dest('lib/'))
 })
 

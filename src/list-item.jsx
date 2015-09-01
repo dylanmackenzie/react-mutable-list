@@ -1,5 +1,6 @@
 import React from 'react/addons'
 import classSet from 'classnames'
+import autobind from 'autobind-decorator'
 
 const maxClickDuration = 200
 const BEMSeparator = '--'
@@ -19,10 +20,6 @@ export default class MutableListItem extends React.Component {
     this._boundingClientRect = null
 
     this._clickFlag = false
-    this._handlers = {
-      mouseMove: this._onDrag.bind(this),
-      mouseUp: this._onDragEnd.bind(this),
-    }
   }
 
   getBoundingClientRect() {
@@ -85,10 +82,10 @@ export default class MutableListItem extends React.Component {
     }
 
     this._clickFlag = false
-    window.addEventListener('mousemove', this._handlers.mouseMove)
-    window.addEventListener('touchmove', this._handlers.mouseMove)
-    window.addEventListener('mouseup', this._handlers.mouseUp)
-    window.addEventListener('touchend', this._handlers.mouseUp)
+    window.addEventListener('mousemove', this._onDrag)
+    window.addEventListener('touchmove', this._onDrag)
+    window.addEventListener('mouseup', this._onDragEnd)
+    window.addEventListener('touchend', this._onDragEnd)
     this.dragOffset = pointerOffset(e, this.getBoundingClientRect())
     this.props.onDragStart(this, e)
     this.setState({
@@ -96,6 +93,7 @@ export default class MutableListItem extends React.Component {
     })
   }
 
+  @autobind
   _onDrag(e) {
     if (e.targetTouches != null) {
       e.preventDefault()
@@ -104,15 +102,16 @@ export default class MutableListItem extends React.Component {
     this.props.onDrag(this, e)
   }
 
+  @autobind
   _onDragEnd(e) {
     if (e.targetTouches != null) {
       e.preventDefault()
     }
 
-    window.removeEventListener('mousemove', this._handlers.mouseMove)
-    window.removeEventListener('touchmove', this._handlers.mouseMove)
-    window.removeEventListener('mouseup', this._handlers.mouseUp)
-    window.removeEventListener('touchend', this._handlers.mouseUp)
+    window.removeEventListener('mousemove', this._onDrag)
+    window.removeEventListener('touchmove', this._onDrag)
+    window.removeEventListener('mouseup', this._onDragEnd)
+    window.removeEventListener('touchend', this._onDragEnd)
     this.props.onDragEnd(this, e)
     this.setState({
       isDragging: false,

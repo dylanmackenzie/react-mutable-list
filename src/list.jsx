@@ -1,5 +1,6 @@
 import React from 'react/addons'
 import classSet from 'classnames'
+import autobind from 'autobind-decorator'
 
 const ReactTransitionGroup = React.addons.TransitionGroup
 const BEMSeparator = '--'
@@ -18,15 +19,9 @@ export default class MutableListView extends React.Component {
       deletedHeight: 0,
       deletedCallback: null,
     }
-
-    // Bind event handlers
-    this.onDragStart = this._onDragStart.bind(this)
-    this.onDrag = this._onDrag.bind(this)
-    this.onDragEnd = this._onDragEnd.bind(this)
-    this.onItemDelete = this._onItemDelete.bind(this)
-    this.onItemTransitionEnd = this._onItemTransitionEnd.bind(this)
   }
 
+  @autobind
   _onItemDelete(index, height, cb) {
     if (index === React.Children.count(this.props.children)) {
       cb()
@@ -49,6 +44,7 @@ export default class MutableListView extends React.Component {
     })
   }
 
+  @autobind
   _onItemTransitionEnd(_index, e) {
     if (this.state.deletedCallback == null || e.propertyName !== 'transform') {
       return
@@ -57,6 +53,7 @@ export default class MutableListView extends React.Component {
     this._onItemDeleted()
   }
 
+  @autobind
   _onDragStart(item, _e) {
     this.setState({
       dragItem: item,
@@ -65,6 +62,7 @@ export default class MutableListView extends React.Component {
     })
   }
 
+  @autobind
   _onDrag(item, e) {
     const offset = item.dragOffset
     const delta = pointerOffset(e, item.getBoundingClientRect())
@@ -78,6 +76,7 @@ export default class MutableListView extends React.Component {
     }))
   }
 
+  @autobind
   _onDragEnd(item, _e) {
     const oldIndex = item.props.index
     const newIndex = this._getNewIndex(item)
@@ -158,11 +157,11 @@ export default class MutableListView extends React.Component {
         style,
         index: i,
         enableTransformTransitions,
-        onDragStart: this.onDragStart,
-        onDrag: this.onDrag,
-        onDragEnd: this.onDragEnd,
-        onDelete: this.onItemDelete,
-        onTransitionEnd: this.onItemTransitionEnd,
+        onDragStart: this._onDragStart,
+        onDrag: this._onDrag,
+        onDragEnd: this._onDragEnd,
+        onDelete: this._onItemDelete,
+        onTransitionEnd: this._onItemTransitionEnd,
       })
     })
 
