@@ -22270,9 +22270,8 @@ var MutableListItem = (function (_React$Component) {
           'button',
           {
             className: '' + baseClass + deleteButtonClass,
-            onMouseDown: function (e) {
-              return e.stopPropagation();
-            },
+            onMouseDown: stopPropagation,
+            onTouchStart: stopPropagation,
             onClick: this.props.onRemove },
           'x'
         )
@@ -22298,6 +22297,10 @@ MutableListItem.propTypes = {
   isActive: _reactAddons2['default'].PropTypes.bool,
   enableTransformTransitions: _reactAddons2['default'].PropTypes.bool
 };
+
+function stopPropagation(e) {
+  e.stopPropagation();
+}
 
 function outerHeight(el) {
   var styles = window.getComputedStyle(el);
