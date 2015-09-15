@@ -22307,7 +22307,7 @@ var MutableListItem = (function (_React$Component) {
   }, {
     key: '_onMouseDown',
     value: function _onMouseDown(e) {
-      // Only execute the drag logic if we have a right click
+      // Only execute the drag logic if we have a left click
       if (e.button !== 0) {
         return;
       }
