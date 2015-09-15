@@ -62,7 +62,7 @@ class MutableListItem extends React.Component {
 
   // Determine if we have a click or a drag
   _onMouseDown(e) {
-    // Only execute the drag logic if we have a right click
+    // Only execute the drag logic if we have a left click
     if (e.button !== 0) {
       return
     }
