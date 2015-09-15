@@ -39,16 +39,16 @@ class Controller extends React.Component {
 
     onReorder(from, to) {
         this.setState(state => {
-            let tmp = this.state.items[from]
-            this.state.items.splice(from, 1)
-            this.state.items.splice(to, 0, tmp)
+            let tmp = state.items[from]
+            state.items.splice(from, 1)
+            state.items.splice(to, 0, tmp)
         })
     }
 
 
     onRemove(index) {
         this.setState(state => {
-            this.state.items.splice(index, 1)
+            state.items.splice(index, 1)
         })
     }
 
