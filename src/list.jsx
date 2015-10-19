@@ -7,8 +7,18 @@ import { pointerOffset, outerHeight } from 'utils'
 const ReactTransitionGroup = React.addons.TransitionGroup
 const BEMSeparator = '--'
 
-// A MutableListView represents a single list from which items can be
-// added, deleted, and rearranged.
+/**
+ * A MutableListView represents a single, vertical list from which items
+ * can be added, deleted, and rearranged. Each item can contain any
+ * combination of DOM elements or React components desired by the user.
+ * e.g.
+ *
+ * <List>
+ *  <ListItem>Hello</ListItem>
+ *  <ListItem><b>World!</b></ListItem>
+ * </List>
+ *
+ */
 @pureRender
 class MutableListView extends React.Component {
   constructor(props) {
@@ -203,7 +213,16 @@ MutableListView.defaultProps = {
 }
 
 MutableListView.propTypes = {
+  /**
+   * When a list item is deleted and `enableDeleteTransitions` is true,
+   * elements below the deleted one will be transitioned into their new
+   * place in the list.
+   */
   enableDeleteTransitions: React.PropTypes.bool,
+  /**
+   * Function called whenever list items are dragged into a new
+   * position, with a signature of (oldIndex, newIndex).
+   */
   onReorder: React.PropTypes.func,
 }
 

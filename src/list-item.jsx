@@ -11,6 +11,11 @@ function stopPropagation(e) {
   e.stopPropagation()
 }
 
+/**
+ * A MutableListItem is a single item in a mutable list. It accepts
+ * arbitrary DOM content as its children For convenience, it also
+ * renders a button that calls the onRemove handler when pressed.
+ */
 @pureRender
 class MutableListItem extends React.Component {
   constructor(props) {
@@ -167,6 +172,11 @@ MutableListItem.defaultProps = {
 
 MutableListItem.propTypes = {
   onClick: React.PropTypes.func,
+  /**
+   * Function called whenever delete button is pressed. Actually
+   * removing the list item from the props passed into MutableList
+   * should be accomplished in this function
+   */
   onRemove: React.PropTypes.func,
   isActive: React.PropTypes.bool,
   enableTransformTransitions: React.PropTypes.bool,
