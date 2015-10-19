@@ -144,7 +144,6 @@ class MutableListItem extends React.Component {
       style: this.props.style,
       key: this.props.key,
       className: classSet(this.props.className, {
-        [`${baseClass}${BEMSeparator}active`]: this.props.isActive,
         [`${baseClass}${BEMSeparator}dragging`]: this.state.isDragging,
         [`${baseClass}${BEMSeparator}enableTransformTransitions`]: this.props.enableTransformTransitions,
       }),
@@ -166,7 +165,6 @@ class MutableListItem extends React.Component {
 MutableListItem.defaultProps = {
   onClick: () => {},
   onRemove: () => {},
-  isActive: false,
   enableTransformTransitions: false,
 }
 
@@ -178,7 +176,6 @@ MutableListItem.propTypes = {
    * should be accomplished in this function
    */
   onRemove: React.PropTypes.func,
-  isActive: React.PropTypes.bool,
   enableTransformTransitions: React.PropTypes.bool,
 }
 

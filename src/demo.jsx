@@ -66,9 +66,13 @@ class Controller extends React.Component {
         className: 'ReactList-item',
         onClick: e => this._onClick(i, e),
         onRemove: e => this._onRemove(i, e),
-        isActive: this.state.actives[i],
         key: content,
       }
+
+      if (this.state.actives[i]) {
+        props.className += ' ReactList-item--active'
+      }
+
       return (
         <ListItem {...props}>
           {content}

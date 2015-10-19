@@ -22136,9 +22136,13 @@ var Controller = (function (_React$Component) {
           onRemove: function onRemove(e) {
             return _this._onRemove(i, e);
           },
-          isActive: _this.state.actives[i],
           key: content
         };
+
+        if (_this.state.actives[i]) {
+          props.className += ' ReactList-item--active';
+        }
+
         return _reactAddons2['default'].createElement(
           _index.ListItem,
           props,
