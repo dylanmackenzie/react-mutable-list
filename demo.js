@@ -22241,6 +22241,12 @@ function stopPropagation(e) {
   e.stopPropagation();
 }
 
+/**
+ * A MutableListItem is a single item in a mutable list. It accepts
+ * arbitrary DOM content as its children For convenience, it also
+ * renders a button that calls the onRemove handler when pressed.
+ */
+
 var MutableListItem = (function (_React$Component) {
   _inherits(MutableListItem, _React$Component);
 
@@ -22399,7 +22405,7 @@ var MutableListItem = (function (_React$Component) {
         },
         style: this.props.style,
         key: this.props.key,
-        className: (0, _classnames2['default'])(this.props.className, (_classSet = {}, _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'active', this.props.isActive), _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'dragging', this.state.isDragging), _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'enableTransformTransitions', this.props.enableTransformTransitions), _classSet))
+        className: (0, _classnames2['default'])(this.props.className, (_classSet = {}, _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'dragging', this.state.isDragging), _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'enableTransformTransitions', this.props.enableTransformTransitions), _classSet))
       };
 
       return _reactAddons2['default'].createElement(
@@ -22427,14 +22433,17 @@ var MutableListItem = (function (_React$Component) {
 MutableListItem.defaultProps = {
   onClick: function onClick() {},
   onRemove: function onRemove() {},
-  isActive: false,
   enableTransformTransitions: false
 };
 
 MutableListItem.propTypes = {
+  /**
+   * Function called whenever delete button is pressed. Actually
+   * removing the list item from the props passed into MutableList
+   * should be accomplished in this function
+   */
   onClick: _reactAddons2['default'].PropTypes.func,
   onRemove: _reactAddons2['default'].PropTypes.func,
-  isActive: _reactAddons2['default'].PropTypes.bool,
   enableTransformTransitions: _reactAddons2['default'].PropTypes.bool
 };
 
@@ -22481,8 +22490,18 @@ var _utils = require('utils');
 var ReactTransitionGroup = _reactAddons2['default'].addons.TransitionGroup;
 var BEMSeparator = '--';
 
-// A MutableListView represents a single list from which items can be
-// added, deleted, and rearranged.
+/**
+ * A MutableListView represents a single, vertical list from which items
+ * can be added, deleted, and rearranged. Each item can contain any
+ * combination of DOM elements or React components desired by the user.
+ * e.g.
+ *
+ * <List>
+ *  <ListItem>Hello</ListItem>
+ *  <ListItem><b>World!</b></ListItem>
+ * </List>
+ *
+ */
 
 var MutableListView = (function (_React$Component) {
   _inherits(MutableListView, _React$Component);
@@ -22690,7 +22709,16 @@ MutableListView.defaultProps = {
 };
 
 MutableListView.propTypes = {
+  /**
+   * When a list item is deleted and `enableDeleteTransitions` is true,
+   * elements below the deleted one will be transitioned into their new
+   * place in the list.
+   */
   enableDeleteTransitions: _reactAddons2['default'].PropTypes.bool,
+  /**
+   * Function called whenever list items are dragged into a new
+   * position, with a signature of (oldIndex, newIndex).
+   */
   onReorder: _reactAddons2['default'].PropTypes.func
 };
 
