@@ -11,6 +11,16 @@ e.g.
    <ListItem><b>World!</b></ListItem>
  </List>
 
+MutableList automatically applies BEM-style class names to allow the
+user to easily style the list in its various states. The first
+className passed into a List or ListItem is used as a base class. All
+modifier classes are named like `{baseClass}--{modifier}`. If no
+classes are given to the list components, default base classes of
+'ReactList' and 'ReactList-item' are used.
+
+When a user is dragging an item, the dragged item and the list will
+get a modifier of 'dragging'.
+
 Props
 -----
 
