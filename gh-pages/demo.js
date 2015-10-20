@@ -22190,7 +22190,7 @@ var Controller = (function (_React$Component) {
           _index.List,
           { className: 'ReactList', onReorder: function (o, n) {
               return _this._onReorder(o, n);
-            }, enableDeleteTransitions: true, isDraggable: true },
+            }, enableDeleteTransitions: true },
           lis
         )
       );

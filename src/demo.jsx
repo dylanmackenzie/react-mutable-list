@@ -105,7 +105,7 @@ class Controller extends React.Component {
           onChange={e => this._onInputChange(e)}
           onKeyDown={e => this._onInputKey(e)}
         />
-        <List className='ReactList' onReorder={(o, n) => this._onReorder(o, n)} enableDeleteTransitions={true} isDraggable={true}>
+        <List className='ReactList' onReorder={(o, n) => this._onReorder(o, n)} enableDeleteTransitions={true}>
           {lis}
         </List>
       </div>
