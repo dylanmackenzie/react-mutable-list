@@ -41,10 +41,19 @@ class MutableListView extends React.Component {
       return
     }
 
-    this.setState({
-      deletedIndex: index,
-      deletedHeight: height,
-      deletedCallback: cb,
+    this.setState(state => {
+      // If another item has not finished its delete transition, delete
+      // this one immediately.
+      if (state.deletedCallback != null) {
+        cb()
+        return
+      }
+
+      return {
+        deletedIndex: index,
+        deletedHeight: height,
+        deletedCallback: cb,
+      }
     })
   }
 
@@ -140,9 +149,8 @@ class MutableListView extends React.Component {
       : this.state.deletedHeight
 
     const upTransformString = `translateY(-${itemHeight}px)`
-    const downTransformString = `translateY(${itemHeight}px)`
     const dragTransformString = (newIndex < oldIndex)
-      ? downTransformString
+      ? `translateY(${itemHeight}px)`
       : upTransformString
 
     const items = React.Children.map(this.props.children, (child, i) => {
@@ -156,6 +164,7 @@ class MutableListView extends React.Component {
 
       if (this.state.dragItem != null) {
         if (i === this.state.dragItem.props.index) {
+          // Translate the dragged element to the cursor
           style.transform = `translate(${transform[0]}px, ${transform[1]}px)`
         } else {
           enableTransformTransitions = true
