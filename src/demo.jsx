@@ -8,27 +8,25 @@ class Controller extends React.Component {
     super(props)
 
     this.state = {
-      actives: [true, false, false, false, false],
-      content: ['hallo', 'world', 'was', 'geht', 'ab'],
+      active: 0,
+      content: ['Charlie', 'Kenny', 'Cindy', 'Lucy', 'Buck'],
       input: '',
     }
   }
 
   _onClick(i, _e) {
     this.setState(state => {
-      state.actives[state.actives.indexOf(true)] = false
-      state.actives[i] = true
+      state.active = i
     })
   }
 
-  _onReorder(old, neu) {
+  _onReorder(from, to) {
     this.setState(state => {
-      let tmp = state.content[old]
-      state.content.splice(old, 1)
-      state.content.splice(neu, 0, tmp)
-      tmp = state.actives[old]
-      state.actives.splice(old, 1)
-      state.actives.splice(neu, 0, tmp)
+      let active = state.content[state.active]
+      let tmp = state.content[from]
+      state.content.splice(from, 1)
+      state.content.splice(to, 0, tmp)
+      state.active = state.content.indexOf(active)
     })
   }
 
@@ -38,7 +36,9 @@ class Controller extends React.Component {
 
     this.setState(state => {
       state.content.splice(i, 1)
-      state.actives.splice(i, 1)
+      if (state.active >= i) {
+        --state.active
+      }
     })
   }
 
@@ -55,7 +55,6 @@ class Controller extends React.Component {
 
     this.setState(state => {
       state.content.push(state.input)
-      state.actives.push(false)
       return { input: '' }
     })
   }
@@ -69,13 +68,29 @@ class Controller extends React.Component {
         key: content,
       }
 
-      if (this.state.actives[i]) {
+      const size = '1.5em'
+      const style = {
+        borderRadius: '50% 50%',
+        backgroundColor: 'grey',
+        height: size,
+        width: size,
+        color: 'white',
+        lineHeight: size,
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        fontFamily: 'sans-serif',
+      }
+
+      if (this.state.active == i) {
         props.className += ' ReactList-item--active'
       }
 
       return (
         <ListItem {...props}>
-          {content}
+          <span style={style}>{content.slice(0, 1)}</span>
+          <span style={{marginLeft: '0.6em'}} className='ReactList-name'>
+            {content}
+          </span>
         </ListItem>
       )
     })

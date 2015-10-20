@@ -22065,8 +22065,8 @@ var Controller = (function (_React$Component) {
     _get(Object.getPrototypeOf(Controller.prototype), 'constructor', this).call(this, props);
 
     this.state = {
-      actives: [true, false, false, false, false],
-      content: ['hallo', 'world', 'was', 'geht', 'ab'],
+      active: 0,
+      content: ['Charlie', 'Kenny', 'Cindy', 'Lucy', 'Buck'],
       input: ''
     };
   }
@@ -22075,20 +22075,18 @@ var Controller = (function (_React$Component) {
     key: '_onClick',
     value: function _onClick(i, _e) {
       this.setState(function (state) {
-        state.actives[state.actives.indexOf(true)] = false;
-        state.actives[i] = true;
+        state.active = i;
       });
     }
   }, {
     key: '_onReorder',
-    value: function _onReorder(old, neu) {
+    value: function _onReorder(from, to) {
       this.setState(function (state) {
-        var tmp = state.content[old];
-        state.content.splice(old, 1);
-        state.content.splice(neu, 0, tmp);
-        tmp = state.actives[old];
-        state.actives.splice(old, 1);
-        state.actives.splice(neu, 0, tmp);
+        var active = state.content[state.active];
+        var tmp = state.content[from];
+        state.content.splice(from, 1);
+        state.content.splice(to, 0, tmp);
+        state.active = state.content.indexOf(active);
       });
     }
   }, {
@@ -22099,7 +22097,9 @@ var Controller = (function (_React$Component) {
 
       this.setState(function (state) {
         state.content.splice(i, 1);
-        state.actives.splice(i, 1);
+        if (state.active >= i) {
+          --state.active;
+        }
       });
     }
   }, {
@@ -22118,7 +22118,6 @@ var Controller = (function (_React$Component) {
 
       this.setState(function (state) {
         state.content.push(state.input);
-        state.actives.push(false);
         return { input: '' };
       });
     }
@@ -22139,14 +22138,36 @@ var Controller = (function (_React$Component) {
           key: content
         };
 
-        if (_this.state.actives[i]) {
+        var size = '1.5em';
+        var style = {
+          borderRadius: '50% 50%',
+          backgroundColor: 'grey',
+          height: size,
+          width: size,
+          color: 'white',
+          lineHeight: size,
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          fontFamily: 'sans-serif'
+        };
+
+        if (_this.state.active == i) {
           props.className += ' ReactList-item--active';
         }
 
         return _reactAddons2['default'].createElement(
           _index.ListItem,
           props,
-          content
+          _reactAddons2['default'].createElement(
+            'span',
+            { style: style },
+            content.slice(0, 1)
+          ),
+          _reactAddons2['default'].createElement(
+            'span',
+            { style: { marginLeft: '0.6em' }, className: 'ReactList-name' },
+            content
+          )
         );
       });
 
@@ -22534,10 +22555,19 @@ var MutableListView = (function (_React$Component) {
         return;
       }
 
-      this.setState({
-        deletedIndex: index,
-        deletedHeight: height,
-        deletedCallback: cb
+      this.setState(function (state) {
+        // If another item has not finished its delete transition, delete
+        // this one immediately.
+        if (state.deletedCallback != null) {
+          cb();
+          return;
+        }
+
+        return {
+          deletedIndex: index,
+          deletedHeight: height,
+          deletedCallback: cb
+        };
       });
     }
   }, {
@@ -22640,8 +22670,7 @@ var MutableListView = (function (_React$Component) {
       var itemHeight = this.state.dragItem != null ? this.state.dragItem.getOuterHeight() : this.state.deletedHeight;
 
       var upTransformString = 'translateY(-' + itemHeight + 'px)';
-      var downTransformString = 'translateY(' + itemHeight + 'px)';
-      var dragTransformString = newIndex < oldIndex ? downTransformString : upTransformString;
+      var dragTransformString = newIndex < oldIndex ? 'translateY(' + itemHeight + 'px)' : upTransformString;
 
       var items = _reactAddons2['default'].Children.map(this.props.children, function (child, i) {
         var style = child.props.style || {};
@@ -22654,6 +22683,7 @@ var MutableListView = (function (_React$Component) {
 
         if (_this2.state.dragItem != null) {
           if (i === _this2.state.dragItem.props.index) {
+            // Translate the dragged element to the cursor
             style.transform = 'translate(' + transform[0] + 'px, ' + transform[1] + 'px)';
           } else {
             enableTransformTransitions = true;
