@@ -22411,8 +22411,17 @@ var MutableListItem = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _classSet,
-          _this2 = this;
+      var _this2 = this;
+
+      var style = this.props.style;
+      if (this.props.enableTransformTransitions) {
+        var transition = 'transform ' + this.props.transitionDuration + 'ms';
+        if (style.transition == null || style.transition === '') {
+          style.transition = transition;
+        } else {
+          style.transition += ', ' + transition;
+        }
+      }
 
       var baseClass = this.props.className && this.props.className.split(' ')[0] || 'ReactList-item';
       var props = {
@@ -22428,9 +22437,9 @@ var MutableListItem = (function (_React$Component) {
         onTouchEnd: function onTouchEnd(e) {
           return _this2._onMouseUp(e);
         },
-        style: this.props.style,
+        style: style,
         key: this.props.key,
-        className: (0, _classnames2['default'])(this.props.className, (_classSet = {}, _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'dragging', this.state.isDragging), _defineProperty(_classSet, '' + baseClass + BEMSeparator + 'enableTransformTransitions', this.props.enableTransformTransitions), _classSet))
+        className: (0, _classnames2['default'])(this.props.className, _defineProperty({}, '' + baseClass + BEMSeparator + 'dragging', this.state.isDragging))
       };
 
       return _reactAddons2['default'].createElement(
@@ -22458,17 +22467,23 @@ var MutableListItem = (function (_React$Component) {
 MutableListItem.defaultProps = {
   onClick: function onClick() {},
   onRemove: function onRemove() {},
-  enableTransformTransitions: false
+  enableTransformTransitions: false,
+  transitionDuration: 300
 };
 
 MutableListItem.propTypes = {
+  onClick: _reactAddons2['default'].PropTypes.func,
   /**
    * Function called whenever delete button is pressed. Actually
    * removing the list item from the props passed into MutableList
    * should be accomplished in this function
    */
-  onClick: _reactAddons2['default'].PropTypes.func,
   onRemove: _reactAddons2['default'].PropTypes.func,
+  /**
+   * Duration of the transform transition for an individual list item.
+   * Overrides the same property if set on the parent list.
+   */
+  transitionDuration: _reactAddons2['default'].PropTypes.number,
   enableTransformTransitions: _reactAddons2['default'].PropTypes.bool
 };
 
@@ -22697,6 +22712,7 @@ var MutableListView = (function (_React$Component) {
           style: style,
           index: i,
           enableTransformTransitions: enableTransformTransitions,
+          transitionDuration: child.props.transitionDuration || _this2.props.transitionDuration,
           onDragStart: _this2._onDragStart,
           onDrag: _this2._onDrag,
           onDragEnd: _this2._onDragEnd,
@@ -22739,7 +22755,8 @@ var MutableListView = (function (_React$Component) {
 
 MutableListView.defaultProps = {
   enableDeleteTransitions: false,
-  onReorder: function onReorder() {}
+  onReorder: function onReorder() {},
+  transitionDuration: 300
 };
 
 MutableListView.propTypes = {
@@ -22753,7 +22770,12 @@ MutableListView.propTypes = {
    * Function called whenever list items are dragged into a new
    * position, with a signature of (oldIndex, newIndex).
    */
-  onReorder: _reactAddons2['default'].PropTypes.func
+  onReorder: _reactAddons2['default'].PropTypes.func,
+  /**
+   * Duration of the transform transition for each of the list's
+   * children. Can be overridden
+   */
+  transitionDuration: _reactAddons2['default'].PropTypes.number
 };
 
 exports['default'] = MutableListView;
