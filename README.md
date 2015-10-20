@@ -15,10 +15,10 @@ To install simply
     npm install react-mutable-list
 
 Functionality is exposed in three different ways:
-    - es6/jsx files in `src/`
-    - es5 files with commonJS exports in `lib/`
-    - a prepackaged version with the entire react library under
-      `dist/list.js`
+
+- es6/jsx files in `src/`
+- es5 files with commonJS exports in `lib/`
+- a prepackaged version with the entire react library under `dist/list.js`
 
 Example
 -------
