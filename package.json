@@ -24,7 +24,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "gulp publish"
+    "prepublish": "gulp publish",
+    "docs": "(cd docs; react-docgen ../src/list{,-item}.jsx | ./build-docs.sh)"
   },
   "keywords": [
     "react",

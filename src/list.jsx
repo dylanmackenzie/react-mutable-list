@@ -13,10 +13,10 @@ const BEMSeparator = '--'
  * combination of DOM elements or React components desired by the user.
  * e.g.
  *
- * <List>
- *  <ListItem>Hello</ListItem>
- *  <ListItem><b>World!</b></ListItem>
- * </List>
+ *  <List>
+ *    <ListItem>Hello</ListItem>
+ *    <ListItem><b>World!</b></ListItem>
+ *  </List>
  *
  */
 @pureRender
@@ -237,7 +237,8 @@ MutableListView.propTypes = {
   onReorder: React.PropTypes.func,
   /**
    * Duration of the transform transition for each of the list's
-   * children. Can be overridden
+   * children. Can be overridden item by item by setting it directly on
+   * the list items.
    */
   transitionDuration: React.PropTypes.number,
 }
