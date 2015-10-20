@@ -178,6 +178,7 @@ class MutableListView extends React.Component {
         style,
         index: i,
         enableTransformTransitions,
+        transitionDuration: child.props.transitionDuration || this.props.transitionDuration,
         onDragStart: this._onDragStart,
         onDrag: this._onDrag,
         onDragEnd: this._onDragEnd,
@@ -219,6 +220,7 @@ class MutableListView extends React.Component {
 MutableListView.defaultProps = {
   enableDeleteTransitions: false,
   onReorder: () => {},
+  transitionDuration: 300,
 }
 
 MutableListView.propTypes = {
@@ -233,6 +235,11 @@ MutableListView.propTypes = {
    * position, with a signature of (oldIndex, newIndex).
    */
   onReorder: React.PropTypes.func,
+  /**
+   * Duration of the transform transition for each of the list's
+   * children. Can be overridden
+   */
+  transitionDuration: React.PropTypes.number,
 }
 
 export default MutableListView

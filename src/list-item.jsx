@@ -135,17 +135,26 @@ class MutableListItem extends React.Component {
   }
 
   render() {
+    const style = this.props.style
+    if (this.props.enableTransformTransitions) {
+      const transition = `transform ${this.props.transitionDuration}ms`
+      if (style.transition == null || style.transition === '') {
+        style.transition = transition
+      } else {
+        style.transition += ', ' + transition
+      }
+    }
+
     const baseClass = this.props.className && this.props.className.split(' ')[0] || 'ReactList-item'
     const props = {
       onMouseDown: e => this._onMouseDown(e),
       onTouchStart: e => this._onMouseDown(e),
       onMouseUp: e => this._onMouseUp(e),
       onTouchEnd: e => this._onMouseUp(e),
-      style: this.props.style,
+      style,
       key: this.props.key,
       className: classSet(this.props.className, {
         [`${baseClass}${BEMSeparator}dragging`]: this.state.isDragging,
-        [`${baseClass}${BEMSeparator}enableTransformTransitions`]: this.props.enableTransformTransitions,
       }),
     }
 
@@ -166,6 +175,7 @@ MutableListItem.defaultProps = {
   onClick: () => {},
   onRemove: () => {},
   enableTransformTransitions: false,
+  transitionDuration: 300,
 }
 
 MutableListItem.propTypes = {
@@ -176,6 +186,11 @@ MutableListItem.propTypes = {
    * should be accomplished in this function
    */
   onRemove: React.PropTypes.func,
+  /**
+   * Duration of the transform transition for an individual list item.
+   * Overrides the same property if set on the parent list.
+   */
+  transitionDuration: React.PropTypes.number,
   enableTransformTransitions: React.PropTypes.bool,
 }
 
